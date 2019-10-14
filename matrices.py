@@ -21,6 +21,18 @@ def sumaMatrices(m1,m2):
 
 
 
+
+#ejemplo
+#restaMatrices([[[3,2],[4,-2]],[[1,2],[3,2]]],[[[5,-6],[7,2]],[[2,5],[-12,-9]]])
+def restaMatrices(m1,m2):
+    matriz=[]
+    for i in range(0,len(m1)):
+        vector=[]
+        for j in range(0,len(m1[0])):
+            vector.append((m1[i][j][0]-m2[i][j][0],m1[i][j][1]-m2[i][j][1]))
+        matriz.append(vector)
+    return matriz
+
 #ejemplo
 #negativaMatriz([[[5,-6],[7,2]],[[2,5],[-12,-9]]])
 def negativaMatriz(m1):
@@ -46,13 +58,12 @@ def complejoPorMatriz(c1,m1):
 #ejemplo
 #transpuesta([[(3,2),(4,2)],[(5,1),(6,3)]])
 def transpuesta(m1):
-    matriz=[]
-    for i in range(0,len(m1)):
-        vector=[]
-        for j in range(0,len(m1[0])):
-            vector.append(m1[j][i])
-        matriz.append(vector)
-    return matriz
+    M = [[(0,0) for j in range(len(m1))] for i in range(len(m1[0]))]
+    #MI = [[ valor if j == i else (0,0) for j in range(len(observable))] for i in range(len(observable[0]))]
+    for i in range(0,len(m1[0])):
+        for j in range(0,len(m1)):
+            M[i][j]=m1[j][i]        
+    return M
 
 #ejemplo
 #conjugada([[(3,2),(4,2)],[(5,1),(6,3)]])

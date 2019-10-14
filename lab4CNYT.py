@@ -54,6 +54,25 @@ def valorMedio (observable,ket):
             x=sumas(x,producto(p[i][j],ket[i][j]))        
     return x
 
+def Varianza(observable ,ket):
+    if(Hermitian(observable)==False ):
+        return "el observable debe ser una matriz herminitana"
+    observable= adjunta(observable)
+    valor= valorMedio(observable,ket)
+    MI = [[ valor if j == i else (0,0) for j in range(len(observable))] for i in range(len(observable[0]))]
+    res= restaMatrices(observable,MI)
+    res2=multiplicacionDeMatricesComplejas(res,res)
+    ket=adjunta(ket)
+    r1= multiplicacionDeMatricesComplejas(ket,res2)
+    x=(0,0)
+    
+    for i in range(len(r1)):
+        for j in range(len(r1[0])):
+            x=sumas(x,producto(r1[i][j],ket[i][j]))        
+    return x
+
+
+
 class TestUM(unittest.TestCase):
     #probabilidad
     def test_caso_probabilidad_1(self):
@@ -64,10 +83,17 @@ class TestUM(unittest.TestCase):
         ket1=[[((2**0.5/2),0),(0,(2**0.5/2))]]
         ket2=[[(0,(2**0.5/2)),(-(2**0.5/2),0)]]
         self.assertEqual((0.0, -1.0),amplitudTransicion(ket1,ket2))
+    #ValorMedio
     def test_caso_ValorMedio_1(self):
         observable=[[(1,0),(0,-1)],[(0,1),(2,0)]]
         ket=[[((2**0.5)/2,0)],[(0,(2**0.5)/2)]]
-        self.assertEqual((2.5000000000000004,0),valorMedio (observable,ket)) 
+        self.assertEqual((1.0000000000000007, 0.0),Varianza (observable,ket))
+
+    #Varianza
+    def test_caso_Varianza_1(self):
+        observable=[[(1,0),(0,-1)],[(0,1),(2,0)]]
+        ket=[[((2**0.5)/2,0)],[(0,(2**0.5)/2)]]
+        self.assertEqual((2.5000000000000004,0),valorMedio (observable,ket))
     
 
 if __name__ =='__main__':
