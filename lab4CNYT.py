@@ -54,6 +54,13 @@ def valorMedio (observable,ket):
             x=sumas(x,producto(p[i][j],ket[i][j]))        
     return x
 
+#Matriz Compleja --> observable
+#Matriz Compleja --> ket
+"""
+observable=[[(1,0),(0,-1)],[(0,1),(2,0)]]
+ket=[[((2**0.5)/2,0)],[(0,(2**0.5)/2)]]
+Varianza(observable ,ket)
+"""
 def Varianza(observable ,ket):
     if(Hermitian(observable)==False ):
         return "el observable debe ser una matriz herminitana"
@@ -70,8 +77,21 @@ def Varianza(observable ,ket):
         for j in range(len(r1[0])):
             x=sumas(x,producto(r1[i][j],ket[i][j]))        
     return x
-
-
+#entero --> tiempos
+#Matriz Compleja --> ket
+#lista de Matrizes --> arreglo
+"""
+ket=[[(1,0)],[(0,0)]]
+m1=[[(0,0),(1,0)],[(1,0),(0,0)]]
+m2=[[(2**0.5/2,0),(2**0.5/2,0)],[(2**0.5/2,0),(2**0.5/2,0)]]
+arreglo=[[[(0,0),(1,0)],[(1,0),(0,0)]],[[(2**0.5/2,0),(2**0.5/2,0)],[(2**0.5/2,0),(2**0.5/2,0)]]]
+DinamicaDelSistema(2, ket,arreglo)
+"""
+def DinamicaDelSistema(tiempos, ket,arreglo):
+    fin=ket
+    for i in range(tiempos):
+        fin=multiplicacionDeMatricesComplejas(arreglo[i],fin)
+    return fin
 
 class TestUM(unittest.TestCase):
     #probabilidad
@@ -94,7 +114,13 @@ class TestUM(unittest.TestCase):
         observable=[[(1,0),(0,-1)],[(0,1),(2,0)]]
         ket=[[((2**0.5)/2,0)],[(0,(2**0.5)/2)]]
         self.assertEqual((2.5000000000000004,0),valorMedio (observable,ket))
-    
+    #dinamicaDelSistema
+    def test_caso_dinamicaDelSistema_1(self):
+       ket=[[(1,0)],[(0,0)]]
+       m1=[[(0,0),(1,0)],[(1,0),(0,0)]]
+       m2=[[(2**0.5/2,0),(2**0.5/2,0)],[(2**0.5/2,0),(2**0.5/2,0)]]
+       arreglo=[m1,m2]
+       self.assertEqual([[(0.7071067811865476, 0.0)], [(0.7071067811865476, 0.0)]],DinamicaDelSistema(2, ket,arreglo))
 
 if __name__ =='__main__':
     unittest.main()
